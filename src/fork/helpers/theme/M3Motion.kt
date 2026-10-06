@@ -60,8 +60,13 @@ object M3Motion {
             .toLong()
             .coerceIn(MIN_DURATION_MS, MAX_DURATION_MS)
 
+        // Written out rather than as a SAM lambda: android.view.animation.Interpolator declares no
+        // method of its own, its single abstract method is inherited from TimeInterpolator, and an
+        // object expression is the form that is unambiguously fine for the compiler.
         @JvmField
-        val interpolator: Interpolator = Interpolator { input -> fraction(input.toDouble()).toFloat() }
+        val interpolator: Interpolator = object : Interpolator {
+            override fun getInterpolation(input: Float): Float = fraction(input.toDouble()).toFloat()
+        }
 
         /** [baseDurationMs] scaled by [InuConfig.ANIMATION_SPEED], like the stock animator sites. */
         fun duration(): Long {
