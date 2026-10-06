@@ -60,6 +60,7 @@
     <string name="InuMaterial3Sections">List items</string>
     <string name="InuMaterial3Avatars">Avatars</string>
     <string name="InuMaterial3NavigationAnimation">Navigation animation</string>
+    <string name="InuMaterial3ExpressiveMotion">Expressive motion</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>

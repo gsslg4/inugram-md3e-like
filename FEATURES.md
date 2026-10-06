@@ -39,6 +39,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
   - lists & sections
   - avatars (tonal on-container initials instead of white)
   - profile action buttons
+  - 🐶 expressive motion: spring physics for animations plus a press-time shape morph on floating buttons
 - 🐶 toggle to replace profile photo bottom blur with a plain gradient fade
 - disable number rounding
 - export/import settings to/from json file

@@ -92,6 +92,12 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 LocaleController.getString(R.string.InuMaterial3NavigationAnimation),
             ).setChecked(InuConfig.M3_NAVIGATION_ANIMATION.value)
         )
+        items.add(
+            UItem.asCheck(
+                TOGGLE_M3_EXPRESSIVE_MOTION,
+                LocaleController.getString(R.string.InuMaterial3ExpressiveMotion),
+            ).setChecked(InuConfig.M3_EXPRESSIVE_MOTION.value)
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             items.add(
                 UItem.asButton(
@@ -298,6 +304,12 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 (view as? TextCheckCell)?.isChecked = new
             }
 
+            TOGGLE_M3_EXPRESSIVE_MOTION -> {
+                val new = InuConfig.M3_EXPRESSIVE_MOTION.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+                softRebuild()
+            }
+
             TOGGLE_NAVIGATION_DRAWER -> {
                 val new = InuConfig.NAVIGATION_DRAWER.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
@@ -384,6 +396,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         private val TOGGLE_M3_BOTTOM_TABS = InuUtils.generateId()
         private val TOGGLE_MATERIAL_PROFILE_ACTIONS = InuUtils.generateId()
         private val TOGGLE_M3_NAVIGATION_ANIMATION = InuUtils.generateId()
+        private val TOGGLE_M3_EXPRESSIVE_MOTION = InuUtils.generateId()
         private val BUTTON_ICON_REPLACEMENT = InuUtils.generateId()
         private val BUTTON_NOTIFICATION_ICON = InuUtils.generateId()
         private val BUTTON_PREDICTIVE_BACK_MODE = InuUtils.generateId()
@@ -422,6 +435,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("m3-bottom-tabs", R.string.InuMaterial3BottomTabs, TOGGLE_M3_BOTTOM_TABS),
                 SearchRegistry.Entry("material-profile-actions", R.string.InuMaterialProfileActions, TOGGLE_MATERIAL_PROFILE_ACTIONS),
                 SearchRegistry.Entry("material3-navigation-animation", R.string.InuMaterial3NavigationAnimation, TOGGLE_M3_NAVIGATION_ANIMATION),
+                SearchRegistry.Entry("m3-expressive-motion", R.string.InuMaterial3ExpressiveMotion, TOGGLE_M3_EXPRESSIVE_MOTION),
                 SearchRegistry.Entry("monet-theme", R.string.InuMonetTheme, BUTTON_MONET_THEME),
                 SearchRegistry.Entry("icon-replacement", R.string.InuIconReplacement, BUTTON_ICON_REPLACEMENT),
                 SearchRegistry.Entry("notification-icon", R.string.InuNotificationIcon, BUTTON_NOTIFICATION_ICON),

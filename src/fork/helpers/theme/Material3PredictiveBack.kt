@@ -283,7 +283,7 @@ object Material3PredictiveBack {
             runningAnim = AnimatorSet().apply {
                 playTogether(animators)
                 duration = if (cancel) CANCEL_DURATION else COMMIT_DURATION
-                if (cancel) interpolator = EMPHASIZED_DECELERATE else spatial.forEach { it.interpolator = Material3BackMotion.EMPHASIZED }
+                if (cancel) interpolator = EMPHASIZED_DECELERATE else spatial.forEach { it.interpolator = Material3BackMotion.spatialInterpolator() }
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         runningAnim = null

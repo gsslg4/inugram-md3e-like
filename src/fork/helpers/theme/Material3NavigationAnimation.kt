@@ -44,6 +44,19 @@ object Material3BackMotion {
         }
     )
 
+    /**
+     * Spatial curve for a *time-driven* fragment transition: the M3 emphasized bezier, or - with
+     * [InuConfig.M3_EXPRESSIVE_MOTION] on - the Expressive spring, which overshoots slightly past
+     * the resting position before settling.
+     *
+     * Only for progress that comes from an animator. Gesture progress has to stay monotonic, so the
+     * drag frames of a predictive back must not go through here - only its commit/cancel animation.
+     */
+    fun spatialInterpolator(): Interpolator =
+        if (InuConfig.M3_EXPRESSIVE_MOTION.value) M3Motion.DEFAULT_SPATIAL.interpolator else EMPHASIZED
+
+    fun spatial(progress: Float): Float = spatialInterpolator().getInterpolation(progress)
+
     // The fragment's own background to fill the M3 gap. ViewPagerActivity (e.g.
     // MainTabsActivity) sets hasOwnBackground but draws nothing itself — the visible color comes
     // from the current tab's inner fragment, so descend into it.
@@ -94,7 +107,7 @@ object Material3NavigationAnimation {
         prepareBelow(layout, below)
 
         val offset = dpf2(Material3BackMotion.ENTER_OFFSET_DP)
-        val spatial = Material3BackMotion.EMPHASIZED.getInterpolation(progress)
+        val spatial = Material3BackMotion.spatial(progress)
         top.translationX = offset * (1f - spatial)
         top.alpha = ((progress - OPENING_FADE_START) / (OPENING_FADE_END - OPENING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * spatial
@@ -110,7 +123,7 @@ object Material3NavigationAnimation {
         prepareBelow(layout, below)
 
         val offset = dpf2(Material3BackMotion.ENTER_OFFSET_DP)
-        val spatial = Material3BackMotion.EMPHASIZED.getInterpolation(progress)
+        val spatial = Material3BackMotion.spatial(progress)
         top.translationX = offset * spatial
         top.alpha = 1f - ((progress - CLOSING_FADE_START) / (CLOSING_FADE_END - CLOSING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * (1f - spatial)

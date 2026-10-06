@@ -144,6 +144,9 @@ object InuConfig {
     val M3_BOTTOM_TABS = BoolItem("m3_bottom_tabs", false)
 
     @JvmField
+    val M3_EXPRESSIVE_MOTION = BoolItem("m3_expressive_motion", false)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin
