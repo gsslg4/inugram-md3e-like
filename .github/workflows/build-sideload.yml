@@ -1,0 +1,137 @@
+# Debug build, for installing next to an existing inugram.
+#
+# build.yml produces a release APK whose applicationId is `desu.inugram` - the same package the
+# official builds use, with a different signing key, so Android refuses to install it over one.
+# The debug build type carries `applicationIdSuffix ".beta"`, so this one lands as
+# `desu.inugram.beta` and the two coexist.
+#
+# Fork-local: it does not touch build.yml, so nothing here can conflict on a rebase.
+name: build (sideload)
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: build-sideload-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: free disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # main
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: false
+          swap-storage: true
+
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - name: configure git identity
+        run: |
+          git config --global user.email ci@inugram
+          git config --global user.name 'inugram ci'
+
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: install libclang
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libclang-dev
+
+      - name: cache cargo
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src/native/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('src/native/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: install android rust toolchain
+        run: |
+          rustup target add aarch64-linux-android
+          cargo install cargo-ndk --version 4.1.2 --locked
+
+      - uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: set up ccache
+        uses: hendrikmuhs/ccache-action@e42e6681d2906409c5dde4a315af6214eaa890ee # v1.2
+        with:
+          append-timestamp: true
+          key: ${{ runner.os }}-ndk-27.2-debug
+          restore-keys: |
+            ${{ runner.os }}-ndk-27.2-debug
+            ${{ runner.os }}-ndk-27.2-release-full
+            ${{ runner.os }}-
+          max-size: 5G
+
+      - name: set up worktree
+        run: pnpm run setup -- --ci
+
+      - uses: gradle/actions/setup-gradle@0b6dd653ba04f4f93bf581ec31e66cbd7dcb644d # v4
+        with:
+          gradle-home-cache-cleanup: true
+          cache-read-only: false
+
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: >-
+            platforms;android-36
+            build-tools;36.0.0
+            cmake;3.31.6
+            ndk;27.2.12479018
+
+      - name: tune gradle
+        run: |
+          echo 'org.gradle.caching=true' >> ~/.gradle/gradle.properties
+          echo 'org.gradle.parallel=true' >> ~/.gradle/gradle.properties
+          echo 'org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8 -XX:+UseParallelGC' >> ~/.gradle/gradle.properties
+          echo 'android.native.buildOutput=verbose' >> ~/.gradle/gradle.properties
+
+      # the plugin grant catalogue the debug build expects; `pnpm run build-debug` runs this first
+      - name: generate grants
+        run: pnpm run generate-grants
+
+      - name: build (debug)
+        working-directory: worktree
+        env:
+          COMMIT_ID: ${{ github.sha }}
+          CCACHE_COMPILERCHECK: content
+          CCACHE_SLOPPINESS: time_macros,file_macro,include_file_mtime,include_file_ctime,locale,system_headers
+          CCACHE_BASEDIR: ${{ github.workspace }}/worktree
+        run: ./gradlew --no-daemon :TMessagesProj_App:assembleDebug
+
+      - name: stage artifacts
+        run: |
+          mkdir -p out
+          sha=$(git rev-parse --short HEAD)
+          cp worktree/TMessagesProj_App/build/outputs/apk/debug/app.apk "out/inugram-beta-$sha.apk"
+          ls -la out
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: inugram-sideload-${{ github.run_id }}
+          path: out/*
+          if-no-files-found: error
+          retention-days: 7
