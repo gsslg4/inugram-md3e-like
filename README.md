@@ -1,160 +1,42 @@
-# Inugram
+# inugram-md3e-like
 
-> there are many tga forks, but this one is mine
+> there are many tga forks, but this one is a fork of one of them
 
-a very cool and dog-pilled fork (or rather, *patchset*, see below) of Telegram Android
+a patchset of a patchset of Telegram Android. the dog is now expressive.
 
 ## primary goals
 
-this fork is primarily intended for long-term Telegram users who want a clean and robust exparience without all the bloat.
+make things bounce.
 
-you can expect:
-- removed annoyances
-- *a lot* of qol features
-- ui tweaks to make it look prettier and cleaner
-- opinionated defaults
+that's it. google shipped springs, teidesu shipped a fork, i shipped a damping ratio.
 
-all that while still allowing users to disable our custom tweaks to (mostly) achieve the stock experience (but why?)
+## features
 
-see [FEATURES.md](FEATURES.md) for a non-exhaustive list of what's added/tweaked/fixed (kept in sync as patches land).
+- material 3 expressive motion: every screen transition now overshoots its
+  resting position by 1.5%, and you will feel it in your bones
+- floating buttons morph their corners when held, like they're thinking about it
+- six spring tokens, two of which are mathematically indistinguishable
+  (this is documented, which makes it a feature)
 
-### why should i use this over whatevergram?
+## why should i use this over inugram?
 
-i don't know. maybe you shouldn't.
+you shouldn't. go use [inugram](https://github.com/teidesu/inugram),
+it's the real one and it actually compiles.
 
-inugram exists primarily for my own personal use, because i got tired of the bloat (and lack of transparency) that most forks are, and latest stock is borderline unusable.
-and apparently my vision for a good ui/ux client and declutter aligns well with many long-term telegram users who spend hours in the app daily, so here we are.
+## build status
 
-feel free to fork this repo and remove patches you don't like or add your own, or even "steal" the features you like to your own fork. i really don't care.
-
-## patchset, not a fork
-
-unlike most alternative clients based on Telegram Android, Inugram is a patchset.
-it is not a fork in the traditional sense, but rather a collection of patches applied to the stock codebase.
-
-a few advantages of such approach:
-- easier rebase, since the stock code vs fork code is clearly separated
-- easier to audit the changes, since the modifications are all in one place
-- easier for bugfixes to land upstream (although i dont think they really care)
-
-the patchset is managed using stgit and a few supporting scripts in `scripts/`.
-
-## repo layout
-
-- `src/fork`: our custom Kotlin code
-- `src/fork-app`: ditto, for the bits that live in the app module instead of the library one
-- `src/core`: InuCore, a plain jvm module (so it can be tested without a device)
-- `src/native`: rust plugin engine (quickjs + jni bridge)
-- `src/test`: on-device suite for the plugin bridge (`kotlin/`) and the files it needs (`assets/`)
-- `src/vendor`: third-party code copied in as-is
-- `src/res`: our custom resources
-- `sdk`: the plugin sdk - the api typings (`sdk/types`) and the author-facing cli (`sdk/cli`)
-- `patches/`: stock patches
-- `series`: patch apply order
-- `upstream-commit`: pinned Telegram commit
-- `worktree/`: local Telegram checkout, gitignored
-- `worktree-pluginless/`: separate checkout prepared by `setup --pluginless`, gitignored. should not be used for development.
-
-patches are grouped by their type:
-
-| type | description |
-| --- | --- |
-| `bugfix` | fixes a bug in the upstream codebase |
-| `feature` | adds a contained feature (one or more, if they're related) to the app (qol, ui tweaks, etc.) |
-| `debloat` | hiding stock "features" behind a toggle. you could also call it "un-feature" |
-| `hooks` | small hooks into the various parts of the app to jump into our custom kotlin code for easier maintenance |
-| `misc` | everything else, stuff like build support and such |
-
-each patch strives to be small and self-contained. as a rule of thumb, we should be able to remove a patch and still have the app build, although this is not always possible.
-
-in stgit, patch names are delimited using double underscore, e.g. `patches/misc/whatever.patch` becomes `misc__whatever` in stgit.
-
-## contributing
-
-contributions are welcome, but before implementing a new feature please ping me to discuss it
-
-requirements: Node.js 20+, `git`, `stg`
-
-```sh
-pnpm install
-pnpm run setup
-```
-
-this will clone the upstream into `worktree/` and set up stgit in it, along with all the current patches.
-you can then simply open (not import!) `worktree/` in Android Studio and start hacking. it should build right away.
-
-`pnpm run setup -- --pluginless` prepares `worktree-pluginless/` instead, skipping
-`feature/plugins.patch`, LSPlant and its nested submodules/local patches, and plugin API generation.
-It also works with `--ci` and `--no-submodules`. Build it with `pnpm run build-debug-pluginless`.
-The plain build excludes the plugin engine, native hooking libraries, plugin screens, and plugin test assets.
-Other scripts continue to target `worktree/`.
-
-Setup writes the checkout's build variant to the ignored `inu-build.properties` file.
-Gradle exposes it as `BuildConfig.INU_PLUGINLESS` in both Android modules.
-
-Fork Kotlin sources are linked under `TMessagesProj/src/inu/kotlin` and preprocessed by Gradle's
-`preprocessInuSources` task into `build/generated/inu/kotlin`. Edit `src/fork`, not the generated files.
-Use `// #if PLUGINS`, optional `// #else`, and `// #endif` around plugin-only imports and code.
-Both variants are preprocessed; nested directives are supported, excluded lines remain blank to
-preserve line numbers, and malformed directives fail the build.
-
-### adding a new patch
-
-```bash
-stg new misc__my-patch -m 'my patch description' # to create a patch
-# ...do whatever you need in worktree/...
-stg refresh # to "commit" the worktree changes into the topmost patch
-pnpm run export # to export stgit into patches/
-```
-
-### modifying an existing patch
-
-```bash
-# option 1: edit the patch in-place via stg refresh
-# ...do whatever you need in worktree/...
-stg refresh -p misc__my-patch # --index to only append staged changes
-pnpm run export
-
-# *pretty much* same as above, but manually
-# ...do whatever you need in worktree/...
-stg new tmp-patch
-stg refresh
-stg rebase -i # move tmp1 below the patch you want to edit, and replace "edit" with "s"
-pnpm run export
-
-# option 2: push the patch to the top of the stack
-stg float misc__my-patch
-# ...do whatever you need in worktree/...
-stg refresh
-pnpm run export
-```
-
-as a rule of thumb: prefer the former, but if you get a lot of merge conflicts, try `float`-ing instead.
-
-### auditing patch interactions
-
-```bash
-pnpm run lint-patches
-pnpm run lint-patches -- --check
-```
-
-the audit reports later patches that fully revert an earlier patch or delete lines last changed by one. `--check` exits non-zero when it finds either.
+unknown. never built it. the math checks out in awk though.
 
 ## acknowledgements
 
-- the original [Telegram Android](https://github.com/DrKLO/Telegram) - the basis for this fork
-- a bunch of features were ported from [Nekogram](https://github.com/Nekogram/Nekogram), [NagramX](https://github.com/risin42/NagramX), [materialgram](https://github.com/kukuruzka165/materialgram), [Catogram](https://github.com/Catogram/Catogram)
-- `src/res/drawable/icplaceholder.jpg` is a blurred version of [this artwork by Chobles](https://www.pixiv.net/en/artworks/128756420)
-- Tabler icons by [Tabler Team](https://tabler.io/icons)
-- Solar icon pack by [480 Design](https://t.me/Design480)
-- VKUI icon pack by [VK](https://github.com/VKCOM/icons) (MIT), ported from [Catogram](https://github.com/Catogram/Catogram)
-- AdGuard URL Tracking filter by [AdGuard](https://adguard.com/)
+- [inugram](https://github.com/teidesu/inugram) by teidesu — everything below
+  the spring curve
+- the original [Telegram Android](https://github.com/DrKLO/Telegram) — everything
+  below that
+- `awk`, for being the only toolchain that was installed when it mattered
 
-this project is llm-assisted: a bunch of the code and the patches were (and will be) written by claude. this doesn't mean it's "ai slop", i still review all the code myself,
-but im not an android dev by any means so it might not be perfect. ai-assisted contributions are welcome as long as you disclose that in the pr.
-
-if you have an issue with that - go make your own fork.
+this project is llm-assisted, in the sense that the llm wrote it and i said "В".
 
 ## license
 
-abolish copyright law tbh, but let's just say the repo is licensed under MIT
+MIT, inherited. abolish copyright law tbh.
