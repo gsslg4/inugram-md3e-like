@@ -19,6 +19,8 @@ import org.telegram.ui.Components.UniversalAdapter
 class AppearanceSettingsActivity : SettingsPageActivity() {
 
     private var animationSpeedSlider: SliderCell? = null
+    private var textRevealDurationSlider: SliderCell? = null
+    private var textRevealBlurSlider: SliderCell? = null
 
     override fun getTitle(): CharSequence = LocaleController.getString(R.string.InuLookAndFeel)
 
@@ -212,6 +214,40 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         )
         items.add(UItem.asCustom(animationSpeedSlider))
         items.add(UItem.asShadow(LocaleController.getString(R.string.InuAnimationSpeedInfo)))
+
+        if (textRevealDurationSlider == null) textRevealDurationSlider = SliderCell(
+            this.context, min = 60f, max = 600f,
+            defaultValue = InuConfig.TEXT_REVEAL_DURATION.default.toFloat(),
+            initialValue = InuConfig.TEXT_REVEAL_DURATION.value.toFloat(),
+            step = 10f,
+            title = LocaleController.getString(R.string.InuTextRevealDuration),
+            format = { String.format("%d ms", it.toInt()) },
+            onChanged = { InuConfig.TEXT_REVEAL_DURATION.value = it.toInt() },
+        )
+        if (textRevealBlurSlider == null) textRevealBlurSlider = SliderCell(
+            this.context, min = 0f, max = 16f,
+            defaultValue = InuConfig.TEXT_REVEAL_BLUR.default,
+            initialValue = InuConfig.TEXT_REVEAL_BLUR.value,
+            step = 0.5f,
+            title = LocaleController.getString(R.string.InuTextRevealBlur),
+            format = {
+                if (it <= 0f) LocaleController.getString(R.string.InuTextRevealBlurOff)
+                else String.format("%.1f dp", it)
+            },
+            onChanged = { InuConfig.TEXT_REVEAL_BLUR.value = it },
+        )
+
+        items.add(
+            mkTwoLineCheckItem(
+                TOGGLE_TEXT_REVEAL,
+                R.string.InuTextReveal,
+                R.string.InuTextRevealInfo,
+                InuConfig.TEXT_REVEAL.value
+            )
+        )
+        items.add(UItem.asCustom(textRevealDurationSlider))
+        items.add(UItem.asCustom(textRevealBlurSlider))
+        items.add(UItem.asShadow(LocaleController.getString(R.string.InuTextRevealHint)))
     }
 
     override fun onClick(item: UItem, view: View, position: Int, x: Float, y: Float) {
@@ -260,6 +296,11 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
 
             TOGGLE_REDUCE_MENU_MOTION -> {
                 val new = InuConfig.REDUCE_MENU_MOTION.toggle()
+                (view as? NotificationsCheckCell)?.isChecked = new
+            }
+
+            TOGGLE_TEXT_REVEAL -> {
+                val new = InuConfig.TEXT_REVEAL.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
             }
 
@@ -397,6 +438,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         private val TOGGLE_MATERIAL_PROFILE_ACTIONS = InuUtils.generateId()
         private val TOGGLE_M3_NAVIGATION_ANIMATION = InuUtils.generateId()
         private val TOGGLE_M3_EXPRESSIVE_MOTION = InuUtils.generateId()
+        private val TOGGLE_TEXT_REVEAL = InuUtils.generateId()
         private val BUTTON_ICON_REPLACEMENT = InuUtils.generateId()
         private val BUTTON_NOTIFICATION_ICON = InuUtils.generateId()
         private val BUTTON_PREDICTIVE_BACK_MODE = InuUtils.generateId()
@@ -436,6 +478,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("material-profile-actions", R.string.InuMaterialProfileActions, TOGGLE_MATERIAL_PROFILE_ACTIONS),
                 SearchRegistry.Entry("material3-navigation-animation", R.string.InuMaterial3NavigationAnimation, TOGGLE_M3_NAVIGATION_ANIMATION),
                 SearchRegistry.Entry("m3-expressive-motion", R.string.InuMaterial3ExpressiveMotion, TOGGLE_M3_EXPRESSIVE_MOTION),
+                SearchRegistry.Entry("text-reveal", R.string.InuTextReveal, TOGGLE_TEXT_REVEAL),
                 SearchRegistry.Entry("monet-theme", R.string.InuMonetTheme, BUTTON_MONET_THEME),
                 SearchRegistry.Entry("icon-replacement", R.string.InuIconReplacement, BUTTON_ICON_REPLACEMENT),
                 SearchRegistry.Entry("notification-icon", R.string.InuNotificationIcon, BUTTON_NOTIFICATION_ICON),

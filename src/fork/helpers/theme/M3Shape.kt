@@ -140,6 +140,7 @@ object M3Shape {
             invalidateSelf()
         }
 
+        @Suppress("OVERRIDE_DEPRECATION")
         override fun getOpacity() = PixelFormat.TRANSLUCENT
     }
 }

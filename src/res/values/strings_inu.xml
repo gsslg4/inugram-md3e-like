@@ -61,6 +61,12 @@
     <string name="InuMaterial3Avatars">Avatars</string>
     <string name="InuMaterial3NavigationAnimation">Navigation animation</string>
     <string name="InuMaterial3ExpressiveMotion">Expressive motion</string>
+    <string name="InuTextReveal">Typing animation</string>
+    <string name="InuTextRevealInfo">Characters you type fade in out of a blur</string>
+    <string name="InuTextRevealDuration">Animation duration</string>
+    <string name="InuTextRevealBlur">Blur radius</string>
+    <string name="InuTextRevealBlurOff">Off</string>
+    <string name="InuTextRevealHint">Blur needs the input field to render in software while the animation runs. Set the radius to Off for a plain fade if typing feels heavy.</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>

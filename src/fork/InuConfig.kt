@@ -147,6 +147,17 @@ object InuConfig {
     val M3_EXPRESSIVE_MOTION = BoolItem("m3_expressive_motion", false)
 
     @JvmField
+    val TEXT_REVEAL = BoolItem("text_reveal", false)
+
+    /** Milliseconds a freshly typed run takes to fade in. */
+    @JvmField
+    val TEXT_REVEAL_DURATION = IntItem("text_reveal_duration", 220)
+
+    /** Starting blur radius in dp; 0 leaves a plain fade and skips the software layer. */
+    @JvmField
+    val TEXT_REVEAL_BLUR = FloatItem("text_reveal_blur", 6f)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin

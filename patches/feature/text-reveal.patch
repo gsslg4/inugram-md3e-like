@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: gsslg4 <yamaokoakira@gmail.com>
+Date: Tue, 6 Oct 2026 16:40:19 +0300
+Subject: add a typing animation that fades new characters in out of a blur
+
+---
+ .../java/org/telegram/ui/Components/ChatActivityEnterView.java  | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatActivityEnterView.java b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatActivityEnterView.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatActivityEnterView.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatActivityEnterView.java
+@@ -5942,6 +5942,7 @@ public class ChatActivityEnterView extends FrameLayout implements
+                 if (ignorePrevTextChange) {
+                     return;
+                 }
++                desu.inugram.helpers.chat.TextRevealHelper.onTextChanged(start, before, count);
+ 
+                 boolean allowChangeToSmile = true;
+                 int currentPage;
+@@ -6010,6 +6011,7 @@ public class ChatActivityEnterView extends FrameLayout implements
+                     ignorePrevTextChange = false;
+                     return;
+                 }
++                desu.inugram.helpers.chat.TextRevealHelper.afterTextChanged(messageEditText);
+                 if (innerTextChange == 0) {
+                     if (nextChangeIsSend) {
+                         sendMessage();
