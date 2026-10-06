@@ -686,7 +686,7 @@ index 0000000..0000000 100644
      buildToolsVersion '36.0.0'
  
 -    defaultConfig.applicationId = APP_PACKAGE
-+    defaultConfig.applicationId = "desu.inugram"
++    defaultConfig.applicationId = "desu.inugram.beta"
  
      sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
  

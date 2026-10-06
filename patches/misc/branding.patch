@@ -535,7 +535,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Deutsch</string>
      <string name="English">Englisch</string>
@@ -549,7 +549,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Español</string>
      <string name="English">Inglés</string>
@@ -572,7 +572,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Italiano</string>
      <string name="English">Inglese</string>
@@ -598,7 +598,7 @@ index 0000000..0000000 100644
  <?xml version="1.0" encoding="utf-8"?>
  <resources>
 -    <string name="AppName">Telegram</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
      <string name="AppNameBeta">Telegram-bèta</string>
      <string name="LanguageName">Nederlands</string>
      <string name="English">Engels</string>
@@ -611,7 +611,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Português (Brasil)</string>
      <string name="English">Inglês</string>
@@ -634,7 +634,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Русский</string>
      <string name="English">Английский</string>
@@ -657,7 +657,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">Українська</string>
      <string name="English">Англійська</string>
@@ -693,7 +693,7 @@ index 0000000..0000000 100644
  <resources>
 -    <string name="AppName">Telegram</string>
 -    <string name="AppNameBeta">Telegram Beta</string>
-+    <string name="AppName">Inugram</string>
++    <string name="AppName">Inugram M3E</string>
 +    <string name="AppNameBeta">Inugram Beta</string>
      <string name="LanguageName">English</string>
      <string name="English">English</string>
