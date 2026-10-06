@@ -8,10 +8,10 @@ import android.text.TextPaint
 import android.text.style.CharacterStyle
 import android.text.style.ReplacementSpan
 import android.text.style.UpdateAppearance
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.View
 import android.widget.TextView
 import desu.inugram.InuConfig
-import desu.inugram.helpers.theme.M3Motion
 import org.telegram.messenger.AndroidUtilities
 import java.util.WeakHashMap
 
@@ -32,6 +32,16 @@ import java.util.WeakHashMap
  */
 object TextRevealHelper {
     private val controllers = WeakHashMap<TextView, Controller>()
+
+    /**
+     * Ease-in-out, not one of the [desu.inugram.helpers.theme.M3Motion] springs.
+     *
+     * A critically damped spring is front-loaded - two thirds of the fade is over by half the
+     * duration, and the rest trails as a tail nobody sees - so the character still arrives abruptly
+     * however long the duration is. A symmetric curve spends the time where it shows: faint for
+     * longer, then resolving through the middle.
+     */
+    private val REVEAL_CURVE = AccelerateDecelerateInterpolator()
 
     @JvmStatic
     fun isEnabled(): Boolean = InuConfig.TEXT_REVEAL.value
@@ -121,7 +131,7 @@ object TextRevealHelper {
         override fun run() {
             val now = SystemClock.elapsedRealtime()
             val duration = InuConfig.TEXT_REVEAL_DURATION.value.coerceAtLeast(1).toFloat()
-            val curve = M3Motion.DEFAULT_EFFECTS.interpolator
+            val curve = REVEAL_CURVE
 
             val iterator = live.iterator()
             while (iterator.hasNext()) {
