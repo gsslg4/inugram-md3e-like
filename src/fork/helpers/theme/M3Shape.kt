@@ -2,12 +2,14 @@ package desu.inugram.helpers.theme
 
 import android.animation.ValueAnimator
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.view.View
 import androidx.core.graphics.ColorUtils
 import org.telegram.messenger.AndroidUtilities
 import kotlin.math.min
@@ -58,6 +60,13 @@ object M3Shape {
 
         /** 0 = resting, 1 = fully held. Driven by [onStateChange], read by [draw]. */
         private var pressProgress = 0f
+
+        /** The state we are animating towards, so a state change that is not a press is a no-op. */
+        private var pressTarget = 0f
+
+        /** Whatever [setAlpha] was handed; folded into the fill in [draw]. */
+        private var alphaFactor = 255
+
         private var animator: ValueAnimator? = null
 
         override fun isStateful() = true
@@ -69,7 +78,8 @@ object M3Shape {
         }
 
         private fun animateTo(target: Float) {
-            if (pressProgress == target && animator == null) return
+            if (pressTarget == target) return
+            pressTarget = target
             animator?.cancel()
 
             val token = M3Motion.FAST_SPATIAL
@@ -80,6 +90,10 @@ object M3Shape {
                 addUpdateListener {
                     pressProgress = it.animatedValue as Float
                     invalidateSelf()
+                    // invalidateSelf() redraws but does not rebuild the host view's outline, and a
+                    // View only rebuilds it on a size change or an explicit call - without this the
+                    // elevation shadow would keep the resting corner radius while the fill morphs.
+                    (this@MorphingSelectorDrawable.callback as? View)?.invalidateOutline()
                 }
                 start()
             }
@@ -102,7 +116,11 @@ object M3Shape {
 
         override fun draw(canvas: Canvas) {
             rect.set(bounds)
-            paint.color = ColorUtils.blendARGB(restColor, pressedColor, pressProgress.coerceIn(0f, 1f))
+            // Assigning Paint.color overwrites its alpha, so the drawable-level alpha has to be
+            // folded back in afterwards, not set before.
+            val color = ColorUtils.blendARGB(restColor, pressedColor, pressProgress.coerceIn(0f, 1f))
+            paint.color = color
+            paint.alpha = Color.alpha(color) * alphaFactor / 255
             val r = radiusPx()
             canvas.drawRoundRect(rect, r, r, paint)
         }
@@ -113,7 +131,7 @@ object M3Shape {
         }
 
         override fun setAlpha(alpha: Int) {
-            paint.alpha = alpha
+            alphaFactor = alpha
             invalidateSelf()
         }
 
