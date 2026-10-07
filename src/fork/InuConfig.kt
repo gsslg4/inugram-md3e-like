@@ -165,6 +165,13 @@ object InuConfig {
     val TRANSITION_BLUR_RADIUS = FloatItem("transition_blur_radius", 12f)
 
     @JvmField
+    val SHEET_BLUR = BoolItem("sheet_blur", false)
+
+    /** Blur radius in dp applied behind a bottom sheet's window. */
+    @JvmField
+    val SHEET_BLUR_RADIUS = FloatItem("sheet_blur_radius", 20f)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin

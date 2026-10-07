@@ -42,6 +42,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
   - 🐶 expressive motion: spring physics for animations plus a press-time shape morph on floating buttons
 - 🐶 typing animation: characters you type fade in out of a blur, with duration and blur radius sliders
 - 🐶 transition blur: screens defocus briefly as they move between each other (Android 12+, needs the material 3 navigation animation)
+- 🐶 blur behind bottom sheets, via the compositor's own window blur (Android 12+)
 - 🐶 toggle to replace profile photo bottom blur with a plain gradient fade
 - disable number rounding
 - export/import settings to/from json file

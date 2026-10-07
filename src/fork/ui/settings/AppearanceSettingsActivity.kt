@@ -22,6 +22,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
     private var textRevealDurationSlider: SliderCell? = null
     private var textRevealBlurSlider: SliderCell? = null
     private var transitionBlurSlider: SliderCell? = null
+    private var sheetBlurSlider: SliderCell? = null
 
     override fun getTitle(): CharSequence = LocaleController.getString(R.string.InuLookAndFeel)
 
@@ -270,6 +271,27 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         )
         items.add(UItem.asCustom(transitionBlurSlider))
         items.add(UItem.asShadow(LocaleController.getString(R.string.InuTransitionBlurHint)))
+
+        if (sheetBlurSlider == null) sheetBlurSlider = SliderCell(
+            this.context, min = 4f, max = 48f,
+            defaultValue = InuConfig.SHEET_BLUR_RADIUS.default,
+            initialValue = InuConfig.SHEET_BLUR_RADIUS.value,
+            step = 2f,
+            title = LocaleController.getString(R.string.InuSheetBlurRadius),
+            format = { String.format("%.0f dp", it) },
+            onChanged = { InuConfig.SHEET_BLUR_RADIUS.value = it },
+        )
+
+        items.add(
+            mkTwoLineCheckItem(
+                TOGGLE_SHEET_BLUR,
+                R.string.InuSheetBlur,
+                R.string.InuSheetBlurInfo,
+                InuConfig.SHEET_BLUR.value
+            )
+        )
+        items.add(UItem.asCustom(sheetBlurSlider))
+        items.add(UItem.asShadow(LocaleController.getString(R.string.InuSheetBlurHint)))
     }
 
     override fun onClick(item: UItem, view: View, position: Int, x: Float, y: Float) {
@@ -328,6 +350,11 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
 
             TOGGLE_TRANSITION_BLUR -> {
                 val new = InuConfig.TRANSITION_BLUR.toggle()
+                (view as? NotificationsCheckCell)?.isChecked = new
+            }
+
+            TOGGLE_SHEET_BLUR -> {
+                val new = InuConfig.SHEET_BLUR.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
             }
 
@@ -467,6 +494,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         private val TOGGLE_M3_EXPRESSIVE_MOTION = InuUtils.generateId()
         private val TOGGLE_TEXT_REVEAL = InuUtils.generateId()
         private val TOGGLE_TRANSITION_BLUR = InuUtils.generateId()
+        private val TOGGLE_SHEET_BLUR = InuUtils.generateId()
         private val BUTTON_ICON_REPLACEMENT = InuUtils.generateId()
         private val BUTTON_NOTIFICATION_ICON = InuUtils.generateId()
         private val BUTTON_PREDICTIVE_BACK_MODE = InuUtils.generateId()
@@ -508,6 +536,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("m3-expressive-motion", R.string.InuMaterial3ExpressiveMotion, TOGGLE_M3_EXPRESSIVE_MOTION),
                 SearchRegistry.Entry("text-reveal", R.string.InuTextReveal, TOGGLE_TEXT_REVEAL),
                 SearchRegistry.Entry("transition-blur", R.string.InuTransitionBlur, TOGGLE_TRANSITION_BLUR),
+                SearchRegistry.Entry("sheet-blur", R.string.InuSheetBlur, TOGGLE_SHEET_BLUR),
                 SearchRegistry.Entry("monet-theme", R.string.InuMonetTheme, BUTTON_MONET_THEME),
                 SearchRegistry.Entry("icon-replacement", R.string.InuIconReplacement, BUTTON_ICON_REPLACEMENT),
                 SearchRegistry.Entry("notification-icon", R.string.InuNotificationIcon, BUTTON_NOTIFICATION_ICON),

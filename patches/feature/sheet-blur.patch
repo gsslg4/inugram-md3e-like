@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: gsslg4 <yamaokoakira@gmail.com>
+Date: Wed, 7 Oct 2026 13:43:17 +0300
+Subject: blur what is behind a bottom sheet instead of only dimming it
+
+---
+ .../src/main/java/org/telegram/ui/ActionBar/BottomSheet.java     | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/BottomSheet.java b/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/BottomSheet.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/BottomSheet.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/BottomSheet.java
+@@ -1487,6 +1487,7 @@ public class BottomSheet extends Dialog implements BaseFragment.AttachedSheet {
+             if (Build.VERSION.SDK_INT >= 28) {
+                 params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+             }
++            desu.inugram.helpers.theme.SheetBlurHelper.apply(window, params);
+             window.setAttributes(params);
+         }
+     }

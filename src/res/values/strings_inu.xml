@@ -71,6 +71,10 @@
     <string name="InuTransitionBlurInfo">Screens defocus briefly as they move</string>
     <string name="InuTransitionBlurRadius">Peak blur radius</string>
     <string name="InuTransitionBlurHint">Needs Material 3 navigation animation, and Android 12 or newer. Turns itself off under battery saver, along with the rest of the app\'s blur.</string>
+    <string name="InuSheetBlur">Blur behind sheets</string>
+    <string name="InuSheetBlurInfo">Frosts the screen behind bottom sheets instead of only dimming it</string>
+    <string name="InuSheetBlurRadius">Sheet blur radius</string>
+    <string name="InuSheetBlurHint">Android 12 or newer, and only where the device offers window blur at all — some GPUs and battery saver withhold it. The sheet still draws its own dimming on top, so a smaller radius goes further than you would expect.</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>
