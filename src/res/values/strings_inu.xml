@@ -67,6 +67,10 @@
     <string name="InuTextRevealBlur">Blur radius</string>
     <string name="InuTextRevealBlurOff">Off</string>
     <string name="InuTextRevealHint">Blur needs the input field to render in software while the animation runs. Set the radius to Off for a plain fade if typing feels heavy.</string>
+    <string name="InuTransitionBlur">Transition blur</string>
+    <string name="InuTransitionBlurInfo">Screens defocus briefly as they move</string>
+    <string name="InuTransitionBlurRadius">Peak blur radius</string>
+    <string name="InuTransitionBlurHint">Needs Material 3 navigation animation, and Android 12 or newer. Turns itself off under battery saver, along with the rest of the app\'s blur.</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>

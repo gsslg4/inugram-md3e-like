@@ -112,6 +112,7 @@ object Material3NavigationAnimation {
         top.alpha = ((progress - OPENING_FADE_START) / (OPENING_FADE_END - OPENING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * spatial
         below.eachChild { it.translationX = belowTx }
+        TransitionBlurHelper.apply(top, progress)
         return true
     }
 
@@ -128,6 +129,7 @@ object Material3NavigationAnimation {
         top.alpha = 1f - ((progress - CLOSING_FADE_START) / (CLOSING_FADE_END - CLOSING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * (1f - spatial)
         below.eachChild { it.translationX = belowTx }
+        TransitionBlurHelper.apply(top, progress)
         return true
     }
 
@@ -167,6 +169,9 @@ object Material3NavigationAnimation {
     fun cleanup(layout: ActionBarLayout) {
         val cv = layout.containerView
         val cvb = layout.containerViewBack
+        // Before the early return below: a transition can be cut short with an effect still on.
+        TransitionBlurHelper.clear(cv)
+        TransitionBlurHelper.clear(cvb)
         if (cv?.background !is BelowBackground && cvb?.background !is BelowBackground) return
         resetBelow(cv)
         resetBelow(cvb)

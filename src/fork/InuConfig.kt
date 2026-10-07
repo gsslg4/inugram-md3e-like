@@ -158,6 +158,13 @@ object InuConfig {
     val TEXT_REVEAL_BLUR = FloatItem("text_reveal_blur", 6f)
 
     @JvmField
+    val TRANSITION_BLUR = BoolItem("transition_blur", false)
+
+    /** Peak blur radius in dp, reached halfway through a screen transition. */
+    @JvmField
+    val TRANSITION_BLUR_RADIUS = FloatItem("transition_blur_radius", 12f)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin
