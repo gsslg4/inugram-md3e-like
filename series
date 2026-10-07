@@ -324,3 +324,4 @@ feature/plugins.patch
 bugfix/settings-activity-bulletin.patch
 feature/text-reveal.patch
 feature/sheet-blur.patch
+feature/recents-blur.patch

@@ -17,6 +17,7 @@ import desu.inugram.helpers.media.MediaSendDebugHelper
 import desu.inugram.helpers.plugins.PluginManager
 // #endif
 import desu.inugram.helpers.security.PasscodeHelper
+import desu.inugram.helpers.security.RecentsBlurHelper
 import desu.inugram.helpers.theme.MonetHelper
 import desu.inugram.helpers.theme.NonIslandHelper
 import desu.inugram.helpers.update.ApkInstaller
@@ -147,6 +148,7 @@ object InuHooks {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             MonetHelper.refreshMonetThemeIfChanged()
         }
+        RecentsBlurHelper.onResume(launchActivity)
         CrashReporter.maybeShowReportSheet(launchActivity)
         ProxyVpnHelper.reconcile()
         DrawerHelper.refreshUpdateState()

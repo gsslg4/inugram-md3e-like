@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: gsslg4 <yamaokoakira@gmail.com>
+Date: Wed, 7 Oct 2026 13:49:59 +0300
+Subject: blur the window in the app switcher while the app is backgrounded
+
+---
+ TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java
+@@ -6788,6 +6788,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
+     @Override
+     protected void onPause() {
+         super.onPause();
++        desu.inugram.helpers.security.RecentsBlurHelper.onPause(this);
+         isResumed = false;
+         pipActivityHandler.onPause();
+         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.stopAllHeavyOperations, 4096);

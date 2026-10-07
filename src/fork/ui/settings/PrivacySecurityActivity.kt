@@ -25,6 +25,7 @@ class PrivacySecurityActivity : SettingsPageActivity() {
     override fun getTitle(): CharSequence = LocaleController.getString(R.string.InuPrivacySecurity)
 
     private var sourceRow: TextDetailSettingsCell? = null
+    private var recentsBlurSlider: SliderCell? = null
 
     override fun onResume() {
         super.onResume()
@@ -67,6 +68,24 @@ class PrivacySecurityActivity : SettingsPageActivity() {
                 InuConfig.DISABLE_DRAFT_UPLOAD.value
             )
         )
+        if (recentsBlurSlider == null) recentsBlurSlider = SliderCell(
+            this.context, min = 4f, max = 64f,
+            defaultValue = InuConfig.RECENTS_BLUR_RADIUS.default,
+            initialValue = InuConfig.RECENTS_BLUR_RADIUS.value,
+            step = 2f,
+            title = LocaleController.getString(R.string.InuRecentsBlurRadius),
+            format = { String.format("%.0f dp", it) },
+            onChanged = { InuConfig.RECENTS_BLUR_RADIUS.value = it },
+        )
+        items.add(
+            mkTwoLineCheckItem(
+                TOGGLE_RECENTS_BLUR,
+                R.string.InuRecentsBlur,
+                R.string.InuRecentsBlurInfo,
+                InuConfig.RECENTS_BLUR.value
+            )
+        )
+        items.add(UItem.asCustom(recentsBlurSlider))
         items.add(UItem.asShadow(null))
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.InuStripTrackingParams)))
@@ -123,6 +142,11 @@ class PrivacySecurityActivity : SettingsPageActivity() {
             TOGGLE_HIDE_MY_PHONE_NUMBER -> {
                 val new = InuConfig.HIDE_MY_PHONE_NUMBER.toggle()
                 (view as? TextCheckCell)?.isChecked = new
+            }
+
+            TOGGLE_RECENTS_BLUR -> {
+                val new = InuConfig.RECENTS_BLUR.toggle()
+                (view as? NotificationsCheckCell)?.isChecked = new
             }
 
             TOGGLE_STRIP_TRACKING_PARAMS_ON_OPEN -> {
@@ -228,6 +252,7 @@ class PrivacySecurityActivity : SettingsPageActivity() {
         private val BUTTON_PASSCODE = InuUtils.generateId()
         private val BUTTON_PARANOIA = InuUtils.generateId()
         private val TOGGLE_HIDE_MY_PHONE_NUMBER = InuUtils.generateId()
+        private val TOGGLE_RECENTS_BLUR = InuUtils.generateId()
         private val TOGGLE_STRIP_TRACKING_PARAMS_ON_OPEN = InuUtils.generateId()
         private val TOGGLE_STRIP_TRACKING_PARAMS_ON_PASTE = InuUtils.generateId()
         private val BUTTON_STRIP_TRACKING_PARAMS_SOURCE = InuUtils.generateId()
@@ -243,6 +268,7 @@ class PrivacySecurityActivity : SettingsPageActivity() {
             factory = ::PrivacySecurityActivity,
             entries = listOf(
                 SearchRegistry.Entry("hide-my-phone-number", R.string.InuHideMyPhoneNumber, TOGGLE_HIDE_MY_PHONE_NUMBER),
+                SearchRegistry.Entry("recents-blur", R.string.InuRecentsBlur, TOGGLE_RECENTS_BLUR),
                 SearchRegistry.Entry("strip-tracking-params", R.string.InuStripTrackingParamsOnOpen, TOGGLE_STRIP_TRACKING_PARAMS_ON_OPEN),
                 SearchRegistry.Entry("strip-tracking-params-paste", R.string.InuStripTrackingParamsOnPaste, TOGGLE_STRIP_TRACKING_PARAMS_ON_PASTE),
                 SearchRegistry.Entry("disable-draft-upload", R.string.InuDisableDraftUpload, TOGGLE_DISABLE_DRAFT_UPLOAD),

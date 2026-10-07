@@ -172,6 +172,13 @@ object InuConfig {
     val SHEET_BLUR_RADIUS = FloatItem("sheet_blur_radius", 20f)
 
     @JvmField
+    val RECENTS_BLUR = BoolItem("recents_blur", false)
+
+    /** Blur radius in dp applied to the whole window while the app is backgrounded. */
+    @JvmField
+    val RECENTS_BLUR_RADIUS = FloatItem("recents_blur_radius", 24f)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin

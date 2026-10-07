@@ -75,6 +75,10 @@
     <string name="InuSheetBlurInfo">Frosts the screen behind bottom sheets instead of only dimming it</string>
     <string name="InuSheetBlurRadius">Sheet blur radius</string>
     <string name="InuSheetBlurHint">Android 12 or newer, and only where the device offers window blur at all — some GPUs and battery saver withhold it. The sheet still draws its own dimming on top, so a smaller radius goes further than you would expect.</string>
+    <string name="InuRecentsBlur">Blur in the app switcher</string>
+    <string name="InuRecentsBlurInfo">Frosts the window while the app is in the background</string>
+    <string name="InuRecentsBlurRadius">App switcher blur radius</string>
+    <string name="InuRecentsBlurHint">Android 12 or newer. The system takes its preview around the moment the blur is applied, so on some devices it may still catch a sharp frame; video playing as you leave can also stay sharp.</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>
