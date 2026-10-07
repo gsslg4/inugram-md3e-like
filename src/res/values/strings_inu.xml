@@ -79,6 +79,10 @@
     <string name="InuRecentsBlurInfo">Frosts the window while the app is in the background</string>
     <string name="InuRecentsBlurRadius">App switcher blur radius</string>
     <string name="InuRecentsBlurHint">Android 12 or newer. The system takes its preview around the moment the blur is applied, so on some devices it may still catch a sharp frame; video playing as you leave can also stay sharp.</string>
+    <string name="InuDrawerBlur">Blur behind the drawer</string>
+    <string name="InuDrawerBlurInfo">The screen behind the side menu blurs as it slides open</string>
+    <string name="InuDrawerBlurRadius">Drawer blur radius</string>
+    <string name="InuDrawerBlurHint">Android 12 or newer. Tracks how far the drawer is open, so the screen stays blurred while it is.</string>
     <string name="InuMaterialProfileActions">Profile action buttons</string>
     <string name="InuMonetTheme">Monet theme</string>
     <string name="InuMonetThemeDisabled">Disabled</string>

@@ -44,6 +44,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - 🐶 transition blur: screens defocus briefly as they move between each other (Android 12+, needs the material 3 navigation animation)
 - 🐶 blur behind bottom sheets, via the compositor's own window blur (Android 12+)
 - 🐶 blur in the app switcher: the window frosts while the app is backgrounded, so the recents card does not show your chats (Android 12+)
+- 🐶 blur behind the side drawer, tracking how far it is open (Android 12+)
 - 🐶 toggle to replace profile photo bottom blur with a plain gradient fade
 - disable number rounding
 - export/import settings to/from json file

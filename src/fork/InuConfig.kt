@@ -179,6 +179,13 @@ object InuConfig {
     val RECENTS_BLUR_RADIUS = FloatItem("recents_blur_radius", 24f)
 
     @JvmField
+    val DRAWER_BLUR = BoolItem("drawer_blur", false)
+
+    /** Blur radius in dp behind a fully open side drawer. */
+    @JvmField
+    val DRAWER_BLUR_RADIUS = FloatItem("drawer_blur_radius", 16f)
+
+    @JvmField
     val PLUGINS_ENABLED = BoolItem("plugins_enabled", false)
 
     // json: ordered [{id, file, enabled}] — install id + source file + middleware order + per-plugin

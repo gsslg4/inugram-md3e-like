@@ -20,6 +20,7 @@ import android.widget.FrameLayout
 import androidx.annotation.Keep
 import androidx.core.graphics.ColorUtils
 import desu.inugram.helpers.dialogs.DrawerHelper
+import desu.inugram.helpers.theme.DrawerBlurHelper
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.R
 import org.telegram.ui.ActionBar.BaseFragment
@@ -125,6 +126,7 @@ class DrawerSwipeController(private val host: DrawerLayoutContainer) {
         }
         layout.visibility = if (drawerPosition > 0) View.VISIBLE else View.INVISIBLE
         scrimOpacity = drawerPosition / layout.measuredWidth.toFloat()
+        DrawerBlurHelper.apply(host.parentActionBarLayout?.view, scrimOpacity)
         host.invalidate()
     }
 
